@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Duper Mega Glowing Code Editor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            text-align: center;
+            padding: 10px;
+            font-size: 24px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-shadow: 0 0 8px #f39c12, 0 0 12px #f39c12;
+        }
+        main {
+            display: flex;
+            flex: 1;
+        }
+        .editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #2c3e50;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        textarea {
+            flex: 1;
+            margin: 5px 0;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            resize: none;
+        }
+        textarea:focus {
+            outline: 2px solid #3498db;
+        }
+        #htmlEditor {
+            background-color: #b09b47;
+            color: #2c3e50;
+        }
+        #cssEditor {
+            background-color: aquamarine;
+            color: #2c3e50;
+        }
+        #jsEditor {
+            background-color: #eb9a91;
+            color: white;
+        }
+        .preview {
+            flex: 1;
+            background-color: #ecf0f1;
+            color: #333;
+            border-left: 5px solid #3498db;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        iframe {
+            flex: 1;
+            border: none;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: beige;
+            background-color: #2c3e50;
+            text-shadow: 0 0 8px #f39c12, 0 0 12px #f39c12;
+            transition: background-color 0.3s, text-shadow 0.3s;
+        }
+        button:hover {
+            background-color: #34495e;
+            text-shadow: 0 0 12px #e74c3c, 0 0 20px #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <header>✨ Super Duper Mega Glowing Code Editor ✨</header>
+    <main>
+        <div class="editor">
+            <textarea id="htmlEditor" placeholder="Write HTML here..."><h1>Hello Glowing World!</h1></textarea>
+            <textarea id="cssEditor" placeholder="Write CSS here...">h1 { color: blue; text-align: center; text-shadow: 0 0 8px #8e44ad, 0 0 12px #8e44ad; }</textarea>
+            <textarea id="jsEditor" placeholder="Write JavaScript here...">console.log('Hello, Glowing Console!');</textarea>
+            <div class="buttons">
+                <button id="runButton">Run Code</button>
+                <button id="clearButton">Clear Code</button>
+            </div>
+        </div>
+        <div class="preview">
+            <iframe id="previewFrame"></iframe>
+        </div>
+    </main>
+
+    <script>
+        const htmlEditor = document.getElementById('htmlEditor');
+        const cssEditor = document.getElementById('cssEditor');
+        const jsEditor = document.getElementById('jsEditor');
+        const previewFrame = document.getElementById('previewFrame');
+        const runButton = document.getElementById('runButton');
+        const clearButton = document.getElementById('clearButton');
+
+        const runCode = () => {
+            const htmlContent = htmlEditor.value;
+            const cssContent = `<style>${cssEditor.value}</style>`;
+            const jsContent = `<script>${jsEditor.value}<\/script>`;
+
+            const previewDocument = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            previewDocument.open();
+            previewDocument.write(htmlContent + cssContent + jsContent);
+            previewDocument.close();
+        };
+
+        const clearCode = () => {
+            htmlEditor.value = '';
+            cssEditor.value = '';
+            jsEditor.value = '';
+            previewFrame.src = 'about:blank';
+        };
+
+        runButton.addEventListener('click', runCode);
+        clearButton.addEventListener('click', clearCode);
+
+        // Run code on page load
+        runCode();
+    </script>
+</body>
+</html>
