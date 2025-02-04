@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICU Administration System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, lightpink, lightblue, lightyellow);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            animation: bgAnimation 10s infinite alternate;
+        }
+        @keyframes bgAnimation {
+            0% { background: linear-gradient(135deg, lightpink, lightblue, lightyellow); }
+            100% { background: linear-gradient(135deg, lightyellow, lightblue, lightpink); }
+        }
+        .container {
+            padding: 20px;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: blanchedalmond;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .nav button {
+            background: linear-gradient(45deg, aqua);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .nav button:hover {
+            background: lightgoldenrodyellow;
+            color: black;
+            transform: scale(1.1);
+        }
+        .content {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: aquamarine;
+            border-radius: 15px;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌟 ICU Administration System 🌟</h1>
+    <div class="nav">
+        <button onclick="showPage('dashboard')">🏥 Dashboard</button>
+        <button onclick="showPage('patients')">👨‍⚕️ Patients</button>
+        <button onclick="showPage('vitals')">📊 Vitals</button>
+        <button onclick="showPage('beds')">🛏️ Bed Management</button>
+        <button onclick="showPage('alerts')">🚨 Alerts</button>
+    </div>
+
+    <div class="container">
+        <div id="dashboard" class="content active">
+            <h1>🏥 ICU Dashboard</h1>
+        </div>
+        <div id="patients" class="content">
+            <h1>👨‍⚕️ Patient List</h1>
+            <label>Total Patients:</label>
+            <input type="number" id="totalPatients" oninput="updatePatients()">
+            <label>Alive Patients:</label>
+            <input type="number" id="alivePatients" oninput="updatePatients()">
+            <p id="patientStatus"></p>
+        </div>
+        <div id="vitals" class="content">
+            <h1>📊 Vitals Monitoring</h1>
+            <label>Heart Rate:</label>
+            <input type="number" id="heartRate" oninput="updateVitals()">
+            <p id="heartStatus"></p>
+            <label>Oxygen Levels:</label>
+            <input type="number" id="oxygen" oninput="updateVitals()">
+            <p id="oxygenStatus"></p>
+        </div>
+        <div id="beds" class="content">
+            <h1>🛏️ Bed Management</h1>
+            <label>Total Beds:</label>
+            <input type="number" id="totalBeds" oninput="updateBeds()">
+            <label>Occupied Beds:</label>
+            <input type="number" id="occupiedBeds" oninput="updateBeds()">
+            <p id="bedStatus"></p>
+        </div>
+        <div id="alerts" class="content">
+            <h1>🚨 Alerts & Notifications</h1>
+            <input type="text" id="alertInput" placeholder="Enter alert...">
+            <button onclick="addAlert()">Add Alert</button>
+            <ul id="alertList"></ul>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            let pages = document.querySelectorAll('.content');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+        function updatePatients() {
+            let total = document.getElementById('totalPatients').value;
+            let alive = document.getElementById('alivePatients').value;
+            let status = alive == 0 ? `Total Patients: ${total}` : `Total: ${total}, Alive: ${alive}`;
+            document.getElementById('patientStatus').innerText = status;
+        }
+        function updateVitals() {
+            let heartRate = document.getElementById('heartRate').value;
+            let oxygen = document.getElementById('oxygen').value;
+            document.getElementById('heartStatus').innerText = heartRate > 100 ? "High Heart Rate" : heartRate < 60 ? "Low Heart Rate" : "Normal";
+            document.getElementById('oxygenStatus').innerText = oxygen < 90 ? "Low Oxygen" : "Normal";
+        }
+        function updateBeds() {
+            let totalBeds = document.getElementById('totalBeds').value;
+            let occupiedBeds = document.getElementById('occupiedBeds').value;
+            let availableBeds = totalBeds - occupiedBeds;
+            let status = availableBeds == 0 ? `Total Beds: ${totalBeds}` : `Available Beds: ${availableBeds} / ${totalBeds}`;
+            document.getElementById('bedStatus').innerText = status;
+        }
+        function addAlert() {
+            let alertText = document.getElementById('alertInput').value;
+            if (alertText) {
+                let listItem = document.createElement('li');
+                listItem.innerText = alertText;
+                document.getElementById('alertList').appendChild(listItem);
+                document.getElementById('alertInput').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
